@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routes/stack.routes';
@@ -72,36 +72,47 @@ export default function Login() {
         await usuarioService.recuperarUsuarioLogado();
         navigation.navigate('inicio');
     } catch (error: any) {
-        alert('Erro ao realizar login');
+        alert('Usuário ou senha inválidos!');
         setLoadingLogin(false);
     }
   };
 
     return (
         <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+        <Image
+            source={require('../../../assets/NextFitProLogo.png')}
+            style={styles.logo}
+        />
         {!isEmailVerified ? (
           <>
             <TextInput
               style={styles.input}
-              placeholder="E-mail"
+              placeholder="seuemail@email.com"
               value={email}
               onChangeText={setEmail}
             />
-            <Button title="Proximo" onPress={handleVerifyEmail} />
+            <TouchableOpacity style={styles.button} onPress={handleVerifyEmail} disabled={loadingLogin}>
+              {loadingLogin ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Próximo</Text>
+              )}
+            </TouchableOpacity>
           </>
         ) : tenants.length > 1 && !codigoTenant ? (
           <>
+            <Text style={styles.text}>Escolha a unidade:</Text>
             {tenants.map(tenant => (
-              <Button
-                title={tenant.Fantasia}
-                key={tenant.CodigoTenant}
+              <TouchableOpacity 
+                key={tenant.CodigoTenant} 
+                style={styles.button} 
                 onPress={() => {
                   setCodigoTenant(tenant.CodigoTenant.toString());
                   console.log(codigoTenant);
                   setCodigoUnidade(tenant.CodigoUnidade.toString());
-                }}
-              />
+                }}>
+                <Text style={styles.buttonText}>{tenant.Fantasia}</Text>
+              </TouchableOpacity>
             ))}
           </>
         ) : (
@@ -113,7 +124,13 @@ export default function Login() {
               value={password}
               onChangeText={setPassword}
             />
-            <Button title="Entrar" onPress={onClickLogin} />
+            <TouchableOpacity style={styles.button} onPress={onClickLogin} disabled={loadingLogin}>
+              {loadingLogin ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Entrar</Text>
+              )}
+            </TouchableOpacity>
           </>
         )}
         </View>
@@ -126,19 +143,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#23282B',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  logo: {
+    width: 500,
+    height: 250,
+    marginTop: -60, 
+    marginBottom: 30, 
+    resizeMode: 'contain',
   },
   input: {
+    color: 'white',
+    fontSize: 18,
     width: '100%',
-    height: 40,
-    borderColor: '#ccc',
+    height: 50,
+    borderColor: '#93039D',
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
     borderRadius: 4,
+  },
+  text: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  button: {
+    width: '100%',
+    backgroundColor: '#93039D', 
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 44 / 2, 
+    marginTop: 20,
+    height: 50,
+    justifyContent: 'center'
+  },
+  buttonText: {
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: 'bold',
   },
 });
