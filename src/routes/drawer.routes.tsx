@@ -1,9 +1,13 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import StackRoutes from './stack.routes';
 import Inicio from '../screens/InicioDrawer';
 import Clientes from '../screens/ClientesDrawer';
+import Agenda from '../screens/AgendaDrawer';
+import Treinos from '../screens/TreinosDrawer';
+import Avaliacao from '../screens/AvaliacaoDrawer';
+import Wod from '../screens/WodDrawer';
 
 const Drawer = createDrawerNavigator();
 
@@ -24,6 +28,38 @@ export default function DrawerRoutes() {
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name="user" color={color} size={size}/>,
                     drawerLabel: 'Clientes'
+                }}
+            />
+            <Drawer.Screen 
+                name="agenda" 
+                component={Agenda}
+                options={{
+                    drawerIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size}/>,
+                    drawerLabel: 'Agenda'
+                }}
+            />
+            <Drawer.Screen 
+                name="treinos" 
+                component={Treinos}
+                options={{
+                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="dumbbell" color={color} size={size}/>,
+                    drawerLabel: 'Treinos'
+                }}
+            />
+            <Drawer.Screen 
+                name="avaliacao" 
+                component={Avaliacao}
+                options={{
+                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="heart-pulse" color={color} size={size}/>,
+                    drawerLabel: 'Avaliação'
+                }}
+            />
+            <Drawer.Screen 
+                name="wod" 
+                component={Wod}
+                options={{
+                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="weight" color={color} size={size}/>,
+                    drawerLabel: 'WOD'
                 }}
             />
 
