@@ -1,11 +1,15 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Login from '../screens/Login';
 import DrawerRoutes from './drawer.routes';
+import ClientePerfil from '../screens/ClientePerfil';
 
 export type RootStackParamList = {
     login: undefined;
     inicio: undefined;
+    ClientePerfil: { clienteId: number; clienteNome: string };
   };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -21,6 +25,19 @@ export default function StackRoutes() {
             <Stack.Screen 
                 name="inicio" 
                 component={DrawerRoutes}
+            />
+            <Stack.Screen 
+                name="ClientePerfil"    
+                component={ClientePerfil}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerTitle: 'Perfil do Cliente',
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-back" size={25} color="#000" />
+                        </TouchableOpacity>
+                    ),
+                })}
             />
         </Stack.Navigator>
     )

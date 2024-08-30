@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import clienteListaService from '../../api/services/clientesLista';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routes/stack.routes';
 
 export default function Clientes() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   
@@ -23,7 +28,7 @@ export default function Clientes() {
 
   useFocusEffect(
     React.useCallback(() => {
-      setLoading(true); // Reseta o estado de loading
+      setLoading(true); 
       fetchClientes();
     }, [])
   );
@@ -51,12 +56,27 @@ export default function Clientes() {
     }
   };
 
+  const renderSexo = (status: number) => {
+    switch (status) {
+      case 1:
+        return 'Masculino'; // Verde para Ativo
+      case 2:
+        return 'Feminino'; // Vermelho para Bloqueado
+      default:
+        return null; // Preto para Desconhecido
+    }
+  };
+
   const renderItem = ({ item }: { item: Cliente }) => {
     const statusColor = renderStatusColor(item.ClienteParametro.Status);
+    const sexoCadastro = renderSexo(item.Sexo);
     const inicial = item.Nome.charAt(0).toUpperCase();
 
     return (
-      <TouchableOpacity style={styles.itemContainer}>
+      <TouchableOpacity 
+        style={styles.itemContainer}
+        onPress={() => navigation.navigate('ClientePerfil', { clienteId: item.Id, clienteNome: item.Nome })} 
+      >
         <View style={styles.circleContainer}>
           <View style={styles.circle}>
             <Text style={styles.initial}>{inicial}</Text>
@@ -65,6 +85,7 @@ export default function Clientes() {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.name}>{item.Nome}</Text>
+          <Text style={styles.sexoText}>{sexoCadastro}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -78,6 +99,12 @@ export default function Clientes() {
         keyExtractor={(item) => item.Id.toString()}
         renderItem={renderItem}
       />
+
+      <TouchableOpacity
+        style={styles.floatingButton}
+      >
+        <Icon name="add" size={30} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -97,6 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
+    height: 80,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
@@ -134,8 +162,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#000',
   },
-  statusText: {
+  sexoText: {
     fontSize: 14,
     color: '#666',
+  },
+  floatingButton: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#6200EA',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 30,
+    bottom: 30,
+    elevation: 8,
   },
 });
