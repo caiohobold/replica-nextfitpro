@@ -18,6 +18,7 @@ export interface IResponse {
     First: boolean;
     Last: boolean;
     Content: any;
+    data: any;
 }
 
 export interface ISort {
