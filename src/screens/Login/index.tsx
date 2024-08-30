@@ -5,6 +5,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routes/stack.routes';
 import loginService from '../../api/services/login';
 import usuarioService from '../../api/services/usuario';
+import * as SecureStore from 'expo-secure-store';
+import { token } from '../../api/services/auth';
 
 
 export default function Login() {
@@ -32,24 +34,18 @@ export default function Login() {
           console.log(CodigoUnidade);
 
           if (Tenants && Tenants.length > 1) {
+              //Caso tenha mais de 1 tenant
               setTenants(Tenants);
               setCodigoUnidade(undefined);
-          } else if (Tenants && Tenants.length === 1) {
-              setCodigoTenant(Tenants[0]?.CodigoTenant?.toString());
-              if (CodigoUnidade) {
-                setCodigoUnidade(CodigoUnidade.toString());
-              } else {
-                  alert('Código da unidade não encontrado');
-                  setLoadingLogin(false);
-                  return;
-              }
-          } else {
-              alert('Nenhum tenant encontrado');
-              setLoadingLogin(false);
-              return;
+              console.log("CODIGO UNIDADE -> Tenants && Tenants.length > 1: ", codigoUnidade);
+              console.log("TENANTS -> Tenants && Tenants.length > 1: ", tenants);
+              setIsEmailVerified(true); 
+          } else if (!Tenants) {
+              setCodigoUnidade(CodigoUnidade);
+              setCodigoTenant(undefined);
+              setIsEmailVerified(true); // Vai direto para a senha
           }
 
-          setIsEmailVerified(true);
           setLoadingLogin(false);
       } catch (error) {
           alert('Erro ao verificar unidades');
@@ -58,13 +54,21 @@ export default function Login() {
   };
 
   const onClickLogin = async () => {
-    if (!email || !password || !codigoTenant || !codigoUnidade) {
+    if (!email || !password) {
         alert('Preencha todos os campos');
         return;
     }
 
     try {
         setLoadingLogin(true);
+        const retorno = await token({
+          username: email,
+          password: password,
+          codigoTenant: Number(codigoTenant),
+          codigoUnidade: Number(codigoUnidade)
+        })
+        await SecureStore.setItemAsync('authToken', retorno.access_token);
+        await SecureStore.setItemAsync('refreshToken', retorno.refresh_token);
         await usuarioService.recuperarUsuarioLogado();
         navigation.navigate('inicio');
     } catch (error: any) {
@@ -72,8 +76,6 @@ export default function Login() {
         setLoadingLogin(false);
     }
   };
-
-  
 
     return (
         <View style={styles.container}>
@@ -96,6 +98,7 @@ export default function Login() {
                 key={tenant.CodigoTenant}
                 onPress={() => {
                   setCodigoTenant(tenant.CodigoTenant.toString());
+                  console.log(codigoTenant);
                   setCodigoUnidade(tenant.CodigoUnidade.toString());
                 }}
               />
@@ -111,7 +114,6 @@ export default function Login() {
               onChangeText={setPassword}
             />
             <Button title="Entrar" onPress={onClickLogin} />
-
           </>
         )}
         </View>

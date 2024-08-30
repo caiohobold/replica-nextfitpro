@@ -3,7 +3,7 @@ import {IRequestBase} from '../base/interfaces';
 import {IResponse} from '../../interfaces';
 
 class UsuarioService extends BaseService {
-    protected path: string = '/Usuario';
+    protected path: string = '/usuario';
 
     recuperarAmbienteUsuario(codigoUsuario: number) {
         return this.get({
