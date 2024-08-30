@@ -102,6 +102,7 @@ export default function Clientes() {
 
       <TouchableOpacity
         style={styles.floatingButton}
+        onPress={() => navigation.navigate('ClienteAdd')}
       >
         <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>
