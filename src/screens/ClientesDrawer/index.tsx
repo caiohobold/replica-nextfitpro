@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import clienteListaService from '../../api/services/clientesLista';
+import clienteService from '../../api/services/clientes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -15,7 +15,7 @@ export default function Clientes() {
 
   const fetchClientes = async () => {
     try {
-      const response = await clienteListaService.recuperarPesquisaGeral();
+      const response = await clienteService.recuperarPesquisaGeral();
       const data: Cliente[] = response.data.Content;
       console.log('Data:', data);
       setClientes(data);
