@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes/stack.routes';
-import loginService from '../../api/services/login';
-import usuarioService from '../../api/services/usuario';
-import * as SecureStore from 'expo-secure-store';
-import { token } from '../../api/services/auth';
+import { View, Text, TextInput, Image } from 'react-native';
 import LoginButton from '../../components/LoginButton';
 import useLogin from '../../hooks/useLogin';
 import styles from './styles';
