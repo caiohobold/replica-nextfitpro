@@ -7,6 +7,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../routes/stack.routes';
 import clienteService from '../../api/services/clientes';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function ClientePerfil() {
     const route = useRoute<PerfilClienteRouteProp>();
@@ -16,10 +17,16 @@ export default function ClientePerfil() {
     const [resumo, setResumo] = useState<ResumoCliente | null>(null);
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-      { key: 'resumo', title: 'Resumo' },
-      { key: 'informacoes', title: 'Informações' },
-      { key: 'endereco', title: 'Endereço' },
-      { key: 'responsavel', title: 'Responsável' },
+      { key: 'resumo', title: 'Resumo', icon: 'home' },
+      { key: 'informacoes', title: 'Informações', icon: 'user' },
+      { key: 'endereco', title: 'Endereço', icon: 'map-pin' },
+      { key: 'responsavel', title: 'Responsável', icon: 'user-check' },
+      //{ key: 'avaliacao', title: 'Avaliação física', icon: 'heart' },
+      //{ key: 'evolucao', title: 'Evoluções', icon: 'bar-chart-2' },
+      //{ key: 'vendas', title: 'Vendas', icon: 'shopping-cart' },
+      //{ key: 'financeiro', title: 'Financeiro', icon: 'dollar-sign' },
+      //{ key: 'treinos', title: 'Treinos', icon: 'activity' },
+      //{ key: 'mais', title: 'Mais', icon: 'more-horizontal' },
     ]);
 
 
@@ -104,55 +111,152 @@ export default function ClientePerfil() {
                 <Text style={styles.saldoLabel}>SALDO DEVEDOR</Text>
             </View>
             <View style={styles.saldoItem}>
-                <Text style={styles.saldoValor}>R$ {resumo?.ValorEmAtraso?.toFixed(2) || "0,00"}</Text>
+                <Text style={styles.saldoValorEmAtraso}>R$ {resumo?.ValorEmAtraso?.toFixed(2) || "0,00"}</Text>
                 <Text style={styles.saldoLabel}>EM ATRASO</Text>
             </View>
             <View style={styles.saldoItem}>
-                <Text style={styles.saldoValor}>R$ {resumo?.ValorCredito?.toFixed(2) || "0,00"}</Text>
+                <Text style={styles.saldoValorCredito}>R$ {resumo?.ValorCredito?.toFixed(2) || "0,00"}</Text>
                 <Text style={styles.saldoLabel}>CRÉDITO</Text>
             </View>
         </View>
     
         <View style={styles.contratosContainer}>
             <Text style={styles.sectionTitle}>Contratos ativos</Text>
-            {resumo?.Contratos?.map((contrato) => (
+            {resumo?.Contratos && resumo.Contratos.length > 0 ? (
+              resumo?.Contratos?.map((contrato) => (
                 <View key={contrato.Id} style={styles.contratoItem}>
                     <Text style={styles.contratoDescricao}>{contrato.Descricao}</Text>
                     <Text style={styles.contratoValidade}>Válido até {new Date(contrato.DataValidade).toLocaleDateString()}</Text>
                 </View>
-            ))}
+            ))
+           ) : (
+            <Text style={styles.alertaTexto}>Nenhum contrato ativo encontrado.</Text>
+            )}
         </View>
     
         <View style={styles.sobreContainer}>
-            <Text style={styles.sectionTitle}>Sobre</Text>
-            {resumo?.Alertas?.map((alerta, index) => (
-                <View key={index} style={styles.alertaItem}>
-                    <Text style={styles.alertaTexto}>{alerta.Motivo}</Text>
-                </View>
-            ))}
+            <Text style={styles.sectionTitle}>Motivos de bloqueio</Text>
+            {resumo?.Alertas && resumo.Alertas.length > 0 ? (
+                resumo.Alertas.map((alerta, index) => (
+                    <View key={index} style={styles.alertaItem}>
+                        <Text style={styles.alertaTexto}>{alerta.Motivo}</Text>
+                    </View>
+                ))
+            ) : (
+                <Text style={styles.alertaTexto}>Nenhum motivo de bloqueio encontrado.</Text>
+            )}
         </View>
       </ScrollView>
     );
 
     const Informacoes = () => (
-      <View style={styles.scene}>
-        <Text style={styles.title}>Nome: {cliente?.Nome || "Nome não disponível"}</Text>
-        <Text style={styles.title}>Sexo: {cliente?.Sexo === 1 ? 'Masculino' : 'Feminino'}</Text>
-        <Text style={styles.title}>Telefone: {cliente?.Fone || "Telefone não disponível"}</Text>
-      </View>
+      <ScrollView style={styles.scene}>
+        <Text style={styles.sectionTitle}>Informações</Text>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Nome completo</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Nome || "Nome não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Data de nascimento</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>
+              {cliente?.DataNascimento ? new Date(cliente.DataNascimento).toLocaleDateString() : "Data não disponível"}
+            </Text>
+            <Feather name="calendar" size={20} color="#666" />
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Sexo</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Sexo === 1 ? 'Masculino' : 'Feminino'}</Text>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Telefone</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Fone || "Telefone não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>E-mail</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Email || "E-mail não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>CPF</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Cpf || "CPF não disponível"}</Text>
+          </View>
+        </View>
+
+      </ScrollView>
     );
 
     const Endereco = () => (
-      <View style={styles.scene}>
-        <Text style={styles.title}>Endereço: {cliente?.Endereco || "Endereço não disponível"}</Text>
-        <Text style={styles.title}>Bairro: {cliente?.Bairro || "Bairro não disponível"}</Text>
-        <Text style={styles.title}>CEP: {cliente?.Cep || "CEP não disponível"}</Text>
-        {cliente && cliente.Cidade ? (
-          <Text style={styles.title}>Cidade: {cliente.Cidade.Descricao}, {cliente.Cidade.Uf}</Text>
-        ) : (
-          <Text style={styles.title}>Cidade não disponível</Text>
-        )}
-      </View>
+      <ScrollView style={styles.scene}>
+        <Text style={styles.sectionTitle}>Endereço</Text>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>CEP</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Cep || "CEP não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.halfInputGroup}>
+            <Text style={styles.label}>Endereço</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.input}>{cliente?.Endereco || "Endereço não disponível"}</Text>
+            </View>
+          </View>
+          <View style={styles.halfInputGroup}>
+            <Text style={styles.label}>Número</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.input}>{cliente?.NumEndereco || "Número não disponível"}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Complemento</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.CompleEndereco || "Complemento não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Bairro</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>{cliente?.Bairro || "Bairro não disponível"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.halfInputGroup}>
+            <Text style={styles.label}>Cidade</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.input}>{cliente?.Cidade?.Descricao || "Cidade não disponível"}</Text>
+            </View>
+          </View>
+          <View style={styles.halfInputGroup}>
+            <Text style={styles.label}>Estado</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.input}>{cliente?.Cidade?.Uf || "Estado não disponível"}</Text>
+            </View>
+          </View>
+        </View>
+
+      </ScrollView>
     );
 
     const Responsavel = () => (
@@ -178,7 +282,24 @@ export default function ClientePerfil() {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: Dimensions.get('window').width }}
-        renderTabBar={props => <TabBar {...props} indicatorStyle={{ backgroundColor: '#6200ea' }} />}
+        renderTabBar={props => 
+        <TabBar
+          {...props} 
+          scrollEnabled={false}
+          labelStyle={{ fontSize: 9 }} 
+          style={{ backgroundColor: '#FFFFFF' }} 
+          indicatorStyle={{ backgroundColor: '#6200ea' }} 
+          inactiveColor="#808080" 
+          activeColor="#6200ea"
+          tabStyle={{ flex: 1, minWidth: 20 }}
+          renderIcon={({ route, focused, color }) => (
+            <Feather
+              name={route.icon}
+              size={25}
+              color={color}
+            />
+          )}
+          />}
       />
     );
 }
@@ -189,11 +310,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  scene: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
   },
   title: {
     fontSize: 18,
@@ -236,12 +352,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 15
   },
   saldoItem: {
     alignItems: 'center',
   },
   saldoValor: {
-    fontSize: 18,
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  saldoValorEmAtraso: {
+    color: 'red',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  saldoValorCredito: {
+    color: 'green',
+    fontSize: 17,
     fontWeight: 'bold',
   },
   saldoLabel: {
@@ -281,5 +411,41 @@ const styles = StyleSheet.create({
   alertaTexto: {
     fontSize: 14,
     color: '#666',
+  },
+  scene: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 20,
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 5,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+  },
+  halfInputGroup: {
+    flex: 1,
+    marginRight: 10,
+    marginBottom: 15,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

@@ -27,7 +27,8 @@ export default function DrawerRoutes() {
                 component={Clientes}
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name="user" color={color} size={size}/>,
-                    drawerLabel: 'Clientes'
+                    drawerLabel: 'Clientes',
+                    headerTitle: 'Clientes'
                 }}
             />
             <Drawer.Screen 

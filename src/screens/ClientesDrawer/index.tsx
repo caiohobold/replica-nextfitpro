@@ -44,26 +44,26 @@ export default function Clientes() {
   const renderStatusColor = (status: number) => {
     switch (status) {
       case 1:
-        return '#00FF00'; // Verde para Ativo
+        return '#00FF00'; 
       case 2:
-        return '#FF0000'; // Vermelho para Bloqueado
+        return '#FF0000';
       case 3:
-        return '#808080'; // Cinza para Inativo
+        return '#808080';
       case 4:
-        return '#FFFF00'; // Amarelo para Suspenso
+        return '#FFFF00';
       default:
-        return '#000000'; // Preto para Desconhecido
+        return '#000000';
     }
   };
 
   const renderSexo = (status: number) => {
     switch (status) {
       case 1:
-        return 'Masculino'; // Verde para Ativo
+        return 'Masculino'; 
       case 2:
-        return 'Feminino'; // Vermelho para Bloqueado
+        return 'Feminino';
       default:
-        return null; // Preto para Desconhecido
+        return null;
     }
   };
 
@@ -93,7 +93,6 @@ export default function Clientes() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Clientes</Text>
       <FlatList
         data={clientes}
         keyExtractor={(item) => item.Id.toString()}
@@ -115,11 +114,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   itemContainer: {
     flexDirection: 'row',
