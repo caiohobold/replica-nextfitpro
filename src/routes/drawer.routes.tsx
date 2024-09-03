@@ -1,7 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 
-import StackRoutes from './stack.routes';
 import Inicio from '../screens/InicioDrawer';
 import Clientes from '../screens/ClientesDrawer';
 import Agenda from '../screens/AgendaDrawer';
@@ -13,7 +12,19 @@ const Drawer = createDrawerNavigator();
 
 export default function DrawerRoutes() {
     return (
-        <Drawer.Navigator screenOptions={{ title: '' }}>
+        <Drawer.Navigator 
+            screenOptions={{ 
+                title: '',
+                drawerStyle: {
+                    backgroundColor: '#2F2F2F'
+                },
+                drawerActiveTintColor: 'white',
+                drawerInactiveTintColor: '#A0A0A0',
+                headerStyle: {
+                    backgroundColor: '#2F2F2F',
+                },
+                headerTintColor: 'white',
+            }}>
             <Drawer.Screen 
                 name="home" 
                 component={Inicio}

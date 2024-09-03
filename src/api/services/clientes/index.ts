@@ -21,6 +21,13 @@ export class ClientesService extends BaseService {
             version: 'v2'
         })
     }
+
+    inserirCliente({}) {
+        return this.post({
+            endPoint: 'Inserir',
+            version: 'v2'
+        })
+    }
 }
 
 const clienteService = new ClientesService();

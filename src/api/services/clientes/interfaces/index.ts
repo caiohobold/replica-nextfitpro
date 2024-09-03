@@ -76,3 +76,26 @@ interface Modalidade {
   DescricaoModalidade: string;
   GradesHorarios: any[];
 }
+
+interface ClientePayload {
+    NotificarWhatsApp: boolean;
+    DddFone: string;
+    Fone: string;
+    CodigoUsuarioProfessor: number;
+    TemResponsavel: boolean;
+    CodigoClienteResponsavel: number;
+    CodigoUsuarioConsultor: number;
+    Rg: string;
+    Cpf: string;
+    Email: string;
+    CodigoObjetivo: number;
+    Sexo: number; // 1 para masculino, 2 para feminino
+    DataNascimento: string; // Formato ISO8601 (e.g., "2004-12-13T02:00:00.000Z")
+    Nome: string;
+    CodigoCidade: number;
+    Bairro: string;
+    CompleEndereco: string;
+    NumEndereco: string;
+    Endereco: string;
+    Cep: string;
+}

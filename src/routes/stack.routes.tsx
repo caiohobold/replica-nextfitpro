@@ -19,7 +19,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function StackRoutes() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator 
+            screenOptions={{ 
+                headerShown: false,
+                headerStyle: {
+                    backgroundColor: '#2F2F2F',
+                },
+                headerTintColor: 'white',
+            }}>
             <Stack.Screen 
                 name="login" 
                 component={Login}
@@ -36,7 +43,7 @@ export default function StackRoutes() {
                     headerTitle: 'Perfil do Cliente',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-back" size={25} color="#000" />
+                            <Icon name="arrow-back" size={25} color="white" />
                         </TouchableOpacity>
                     ),
                 })}
@@ -49,7 +56,7 @@ export default function StackRoutes() {
                     headerTitle: 'Novo Cliente',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-back" size={25} color="#000" />
+                            <Icon name="arrow-back" size={25} color="white" />
                         </TouchableOpacity>
                     ),
                 })}
