@@ -196,13 +196,13 @@ export default function ClienteAdd() {
         renderTabBar={props => (
           <TabBar
             {...props}
-            scrollEnabled={true}
-            labelStyle={{ fontSize: 12, textAlign: 'center' }}
+            scrollEnabled={false}
+            labelStyle={{ fontSize: 9, textAlign: 'center' }}
             style={{ backgroundColor: '#FFFFFF' }}
             indicatorStyle={{ backgroundColor: '#6200ea' }}
             inactiveColor="#808080"
             activeColor="#6200ea"
-            tabStyle={{ width: 'auto' }}
+            tabStyle={{ flex: 1}}
             renderIcon={({ route, focused, color }) => (
               <Feather
                 name={route.icon}
