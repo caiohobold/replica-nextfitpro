@@ -3,9 +3,13 @@ import { BaseService } from '../base';
 export class ClientesService extends BaseService {
     protected path: string = '/Cliente';
 
-    recuperarPesquisaGeral() {
+    recuperarPesquisaGeral(page: number = 1) {
         return this.get({
             endPoint: 'recuperarPesquisaGeral',
+            params: {
+                limit: 50,
+                page: page
+            }
         });
     }
 
@@ -22,10 +26,11 @@ export class ClientesService extends BaseService {
         })
     }
 
-    inserirCliente({}) {
+    inserirCliente(clienteData: any) {
         return this.post({
             endPoint: 'Inserir',
-            version: 'v2'
+            version: 'v2',
+            params: clienteData
         })
     }
 }

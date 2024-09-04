@@ -1,56 +1,22 @@
-import { Dimensions, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Dimensions, Text, View, ScrollView } from 'react-native';
 import { ActivityIndicator } from 'react-native';
-import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-type PerfilClienteRouteProp = RouteProp<RootStackParamList, 'ClientePerfil'>;
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '../../routes/stack.routes';
-import clienteService from '../../api/services/clientes';
+import React from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
+import styles from './styles';
+import { useClientePerfil } from '../../hooks/useClientes';
 
 export default function ClientePerfil() {
-    const route = useRoute<PerfilClienteRouteProp>();
-    const { clienteId } = route.params;
-    const [loading, setLoading] = useState<boolean>(true);
-    const [cliente, setCliente] = useState<Cliente | null>(null);
-    const [resumo, setResumo] = useState<ResumoCliente | null>(null);
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-      { key: 'resumo', title: 'Resumo', icon: 'home' },
-      { key: 'informacoes', title: 'Informações', icon: 'user' },
-      { key: 'endereco', title: 'Endereço', icon: 'map-pin' },
-      { key: 'responsavel', title: 'Responsável', icon: 'user-check' },
-      //{ key: 'avaliacao', title: 'Avaliação física', icon: 'heart' },
-      //{ key: 'evolucao', title: 'Evoluções', icon: 'bar-chart-2' },
-      //{ key: 'vendas', title: 'Vendas', icon: 'shopping-cart' },
-      //{ key: 'financeiro', title: 'Financeiro', icon: 'dollar-sign' },
-      //{ key: 'treinos', title: 'Treinos', icon: 'activity' },
-      //{ key: 'mais', title: 'Mais', icon: 'more-horizontal' },
-    ]);
-
-
-    const fetchCliente = async () => {
-      try {
-        const responseCliente = await clienteService.listarCliente(clienteId);
-        const responseResumo = await clienteService.recuperarResumo(clienteId);
-        console.log("Cliente: ", responseCliente.data.Content[0]);
-        console.log("Resumo: ", responseResumo.data.Content);
-        setCliente(responseCliente.data.Content[0]);
-        setResumo(responseResumo.data.Content);
-      } catch (error) {
-        console.error('Erro ao buscar clientes:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    useFocusEffect(
-      React.useCallback(() => {
-        setLoading(true); 
-        fetchCliente();
-      }, [])
-    );
+    const {
+      cliente,
+      getStatusColor,
+      getStatusText,
+      loading,
+      resumo,
+      routes,
+      index,
+      setIndex,
+    } = useClientePerfil();
 
     if (loading) {
       return (
@@ -59,37 +25,6 @@ export default function ClientePerfil() {
         </View>
       );
     }
-
-    const getStatusText = (status: number | undefined): string => {
-      switch (status) {
-        case 1:
-          return "Ativo";
-        case 2:
-          return "Bloqueado";
-        case 3:
-          return "Inativo";
-        case 4:
-          return "Suspenso";
-        default:
-          return "Status desconhecido";
-      }
-    };
-
-    const getStatusColor = (status: number | undefined): string => {
-      switch (status) {
-        case 1:
-          return "green";
-        case 2:
-          return "red";
-        case 3:
-          return "gray"; 
-        case 4:
-          return "orange";
-        default:
-          return "black"; 
-      }
-    };
-
     const Resumo = () => (
       <ScrollView style={styles.scene}>
         <View style={styles.header}>
@@ -292,7 +227,7 @@ export default function ClientePerfil() {
           inactiveColor="#808080" 
           activeColor="#6200ea"
           tabStyle={{ flex: 1, minWidth: 20 }}
-          renderIcon={({ route, focused, color }) => (
+          renderIcon={({ route, color }) => (
             <Feather
               name={route.icon}
               size={25}
@@ -303,149 +238,3 @@ export default function ClientePerfil() {
       />
     );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    marginVertical: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
-  avatarContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#6200ea',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  headerDetails: {
-    marginLeft: 15,
-    justifyContent: 'center',
-  },
-  nome: {
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  status: {
-    color: 'red',
-    fontWeight: 'bold',
-  },
-  sexo: {
-    fontSize: 16,
-    color: '#666',
-  },
-  saldoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: 'black',
-    padding: 15
-  },
-  saldoItem: {
-    alignItems: 'center',
-  },
-  saldoValor: {
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  saldoValorEmAtraso: {
-    color: 'red',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  saldoValorCredito: {
-    color: 'green',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  saldoLabel: {
-    fontSize: 14,
-    color: '#666',
-  },
-  contratosContainer: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  contratoItem: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  contratoDescricao: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  contratoValidade: {
-    fontSize: 14,
-    color: '#666',
-  },
-  sobreContainer: {
-    marginBottom: 20,
-  },
-  alertaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  alertaTexto: {
-    fontSize: 14,
-    color: '#666',
-  },
-  scene: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-  },
-  inputGroup: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
-  halfInputGroup: {
-    flex: 1,
-    marginRight: 10,
-    marginBottom: 15,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});

@@ -22,7 +22,7 @@ export class BaseService {
         const { params, version, endPoint } = request;
         const authToken = await SecureStore.getItemAsync('authToken');
 
-        return api.post(`${version ? `${version}/` : ''}${this.path}/${endPoint}`, params, {
+        return api.post(`${version ? `${version}` : ''}${this.path}/${endPoint}`, params, {
             headers: {
                 'Authorization': `Bearer ${authToken}`,
             }

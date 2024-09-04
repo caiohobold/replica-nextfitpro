@@ -1,42 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Button, Alert, Dimensions, TouchableOpacity } from 'react-native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Text, TextInput, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { TabView, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import clienteService from '../../api/services/clientes';
 import styles from './styles'
+import { useClienteAdd } from '../../hooks/useClientes';
 
 
 export default function ClienteAdd() {
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'informacoes', title: 'Informações', icon: 'user' },
-    { key: 'endereco', title: 'Endereço', icon: 'map-pin' },
-    { key: 'responsaveis', title: 'Responsáveis', icon: 'user-check' },
-    { key: 'mais', title: 'Mais', icon: 'more-horizontal' },
-  ]);
-
-  const [form, setForm] = useState({
-    nome: '',
-    dataNascimento: '',
-    sexo: 1,
-    objetivo: 57224,
-    celular: '',
-    email: '',
-    cpf: '',
-    dddFone: '48',
-    bairro: '',
-    complemento: '',
-    numEndereco: '',
-    endereco: '',
-    cep: '',
-    codigoCidade: 4557,
-    notificarWhatsApp: true,
-    codigoUsuarioProfessor: 15073778,
-    temResponsavel: true,
-    codigoClienteResponsavel: 9967247,
-    codigoUsuarioConsultor: 15073778,
-    rg: '7461149'
-  });
+  const {
+    form,
+    handleInputChange,
+    handleSubmit,
+    index,
+    setIndex,
+    routes
+  } = useClienteAdd();
 
   const renderTabContent = () => {
     switch (index) {
@@ -164,29 +143,7 @@ export default function ClienteAdd() {
         return null
     }
   }
-
-  const handleInputChange = (name: string, value: string | number | boolean) => {
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async () => {
-    const payload = {
-      ...form,
-      DataNascimento: `${form.dataNascimento}T02:00:00.000Z`,
-    };
-
-    try {
-      const response = await clienteService.inserirCliente(payload);
-      Alert.alert("Sucesso", "Cliente inserido com sucesso!");
-    } catch (error) {
-      Alert.alert("Erro", "Ocorreu um erro ao inserir o cliente.");
-      console.error(error);
-    }
-  };
-
+  
   return (
     <>
       <TabView

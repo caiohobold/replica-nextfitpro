@@ -1,72 +1,28 @@
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import clienteService from '../../api/services/clientes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../routes/stack.routes';
 import styles from './styles'
+import { useClientesLista } from '../../hooks/useClientes';
 
 export default function Clientes() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const [clientes, setClientes] = useState<Cliente[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  
+  const {
+    clientes,
+    loading,
+    renderSexo,
+    renderStatusColor,
+    handleLoadMore,
+    navigation
+  } = useClientesLista();
+  const [page, setPage] = useState<number>(1);
 
-  const fetchClientes = async () => {
-    try {
-      const response = await clienteService.recuperarPesquisaGeral();
-      const data: Cliente[] = response.data.Content;
-      console.log('Data:', data);
-      setClientes(data);
-    } catch (error) {
-      console.error('Erro ao buscar clientes:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setLoading(true); 
-      fetchClientes();
-    }, [])
-  );
-
-  if (loading) {
+  if (loading && page === 1) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
-
-  const renderStatusColor = (status: number) => {
-    switch (status) {
-      case 1:
-        return '#00FF00'; 
-      case 2:
-        return '#FF0000';
-      case 3:
-        return '#808080';
-      case 4:
-        return '#FFFF00';
-      default:
-        return '#000000';
-    }
-  };
-
-  const renderSexo = (status: number) => {
-    switch (status) {
-      case 1:
-        return 'Masculino'; 
-      case 2:
-        return 'Feminino';
-      default:
-        return null;
-    }
-  };
 
   const renderItem = ({ item }: { item: Cliente }) => {
     const statusColor = renderStatusColor(item.ClienteParametro.Status);
@@ -98,6 +54,9 @@ export default function Clientes() {
         data={clientes}
         keyExtractor={(item) => item.Id.toString()}
         renderItem={renderItem}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
       />
 
       <TouchableOpacity
