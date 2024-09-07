@@ -3,10 +3,11 @@ import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import Inicio from '../screens/InicioDrawer';
 import Clientes from '../screens/ClientesDrawer';
-import Agenda from '../screens/AgendaDrawer';
+import Agenda from '../screens/LeadsDrawer';
 import Treinos from '../screens/TreinosDrawer';
 import Avaliacao from '../screens/AvaliacaoDrawer';
 import Wod from '../screens/WodDrawer';
+import Leads from '../screens/LeadsDrawer';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,11 +44,11 @@ export default function DrawerRoutes() {
                 }}
             />
             <Drawer.Screen 
-                name="agenda" 
-                component={Agenda}
+                name="leads" 
+                component={Leads}
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size}/>,
-                    drawerLabel: 'Agenda'
+                    drawerLabel: 'Leads'
                 }}
             />
             <Drawer.Screen 

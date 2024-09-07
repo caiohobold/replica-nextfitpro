@@ -36,6 +36,16 @@ export interface IListagemBase {
     filter?: Array<IFilter>;
 }
 
+export interface IParamsPesquisaGeral {
+    verRemovidos: boolean;
+    status?: any;
+    page: number;
+    limit: number;
+    includes?: any;
+    sort?: any;
+    fields?: any;
+}
+
 export type Operators =
     | 'equal'
     | 'contains'

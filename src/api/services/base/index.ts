@@ -2,6 +2,7 @@ import api from '../../index';
 import { IResponse } from '../../interfaces';
 import { IRequestBase } from './interfaces';
 import * as SecureStore from 'expo-secure-store';
+import qs from 'qs';
 
 export class BaseService {
     protected path?: string;
@@ -14,6 +15,9 @@ export class BaseService {
             params,
             headers: {
                 'Authorization': `Bearer ${authToken}`,
+            },
+            paramsSerializer: params => {
+                return qs.stringify(params, { arrayFormat: 'brackets' });
             }
         }) as Promise<IResponse>;
     }

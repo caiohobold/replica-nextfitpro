@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Text, TextInput, ScrollView, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
-import clienteService from '../../api/services/clientes';
 import styles from './styles'
 import { useClienteAdd } from '../../hooks/useClientes';
 
@@ -143,7 +142,7 @@ export default function ClienteAdd() {
         return null
     }
   }
-  
+
   return (
     <>
       <TabView
@@ -163,7 +162,7 @@ export default function ClienteAdd() {
             inactiveColor="#808080"
             activeColor="#6200ea"
             tabStyle={{ flex: 1}}
-            renderIcon={({ route, focused, color }) => (
+            renderIcon={({ route, color }) => (
               <Feather
                 name={route.icon}
                 size={25}

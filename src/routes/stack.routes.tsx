@@ -11,6 +11,7 @@ export type RootStackParamList = {
     login: undefined;
     inicio: undefined;
     ClientePerfil: { clienteId: number; clienteNome: string };
+    LeadPerfil: { leadId: number; leadNome: string };
     ClienteAdd: undefined;
   };
 

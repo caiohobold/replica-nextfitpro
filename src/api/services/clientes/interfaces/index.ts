@@ -90,7 +90,7 @@ interface ClientePayload {
     Email: string;
     CodigoObjetivo: number;
     Sexo: number; // 1 para masculino, 2 para feminino
-    DataNascimento: string; // Formato ISO8601 (e.g., "2004-12-13T02:00:00.000Z")
+    DataNascimento: string; // Formato ISO8601 ("2004-12-13T02:00:00.000Z")
     Nome: string;
     CodigoCidade: number;
     Bairro: string;
