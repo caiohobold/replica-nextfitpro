@@ -11,6 +11,7 @@ export default function LeadPerfil() {
       lead,
       loading,
       oportunidade,
+      atividades,
       routes,
       index,
       setIndex,
@@ -47,6 +48,30 @@ export default function LeadPerfil() {
            ) : (
             <Text style={styles.alertaTexto}>Nenhuma oportunidade aberta encontrada.</Text>
             )}
+        </View>
+        <View>
+        <Text style={styles.sectionTitle}>Atividades</Text>
+        {atividades?.Content && atividades.Content.length > 0 ? (
+            atividades?.Content?.map((atividade) => {
+            const dataPrevista = new Date(atividade.DataHoraPrevista);
+            const hoje = new Date();
+            const atrasada = dataPrevista < hoje;
+
+            return (
+                <View key={atividade.Id} style={styles.contratoItem}>
+                <Text style={styles.oportunidadeDescricao}>{atividade.Assunto}</Text>
+                <Text style={styles.oportunidadeCriacao}>
+                    {atividade.TipoAtividade.Descricao}, {dataPrevista.toLocaleDateString()}
+                </Text>
+                {atrasada && (
+                    <Text style={styles.alertaAtrasado}>Atividade atrasada</Text>
+                )}
+                </View>
+            );
+            })
+        ) : (
+            <Text style={styles.alertaTexto}>Nenhuma atividade encontrada.</Text>
+        )}
         </View>
       </ScrollView>
     );

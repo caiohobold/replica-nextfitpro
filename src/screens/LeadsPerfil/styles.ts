@@ -144,6 +144,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  alertaAtrasado: {
+    color: 'red',
+    fontWeight: 'bold'
+  }
 });
 
   export default styles;

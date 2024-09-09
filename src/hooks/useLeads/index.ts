@@ -6,6 +6,7 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 type PerfilClienteRouteProp = RouteProp<RootStackParamList, 'LeadPerfil'>;
 import { RootStackParamList } from '../../routes/stack.routes';
 import { oportunidadesService } from '../../api/services/oportunidades';
+import { atividadesService } from '../../api/services/atividades';
 
 
 export const useLeadsLista = () => {
@@ -111,6 +112,7 @@ export const useLeadPerfil = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [lead, setLead] = useState<Lead | null>(null);
     const [oportunidade, setOportunidade] = useState<Oportunidade | null>(null);
+    const [atividades, setAtividades] = useState<Atividade | null>(null);
     const [index, setIndex] = useState(0);
     const [routes] = useState([
       { key: 'resumo', title: 'Resumo', icon: 'home' },
@@ -153,12 +155,32 @@ export const useLeadPerfil = () => {
             setLoading(false);
         }
     }
+
+    const fetchAtividades = async () => {
+        const params = {
+            limit: 3,
+            page: 1,
+            includes: ["TipoAtividade"],
+            fields: ["Id","Assunto","Descricao","Status","TipoAtividade.Descricao","Inativo","DataHoraRealizada","DataHoraPrevista"],
+            filter: [{"property":"Inativo","value":false,"operator":"equal"},{"property":"SemDataPrevista","value":false,"operator":"equal"},{"property":"Status","value":[1],"operator":"in"},{"property":"CodigoPessoa","value":10752407,"operator":"equal","and":true}]
+        }
+        try {
+            const responseAtividade = await atividadesService.listarAtividades(params);
+            console.log("Atividade do lead: ", responseAtividade.data);
+            setAtividades(responseAtividade.data);
+        } catch (error) {
+            console.error('Erro ao buscar atividades:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
   
     useFocusEffect(
       React.useCallback(() => {
         setLoading(true); 
         fetchLead();
         fetchOportunidades();
+        fetchAtividades();
       }, [])
     );
 
@@ -168,12 +190,15 @@ export const useLeadPerfil = () => {
       setLead,
       oportunidade,
       setOportunidade,
+      atividades,
+      setAtividades,
       loading,
       setLoading,
       routes,
       index,
       setIndex,
       fetchLead,
-      fetchOportunidades
+      fetchOportunidades,
+      fetchAtividades
     }
   }
