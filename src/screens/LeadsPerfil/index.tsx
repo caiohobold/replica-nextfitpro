@@ -1,67 +1,29 @@
 import { Dimensions, Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { ActivityIndicator } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import { useLeadPerfil } from '../../hooks/useLeads';
-import { atividadesService } from '../../api/services/atividades';
 
 export default function LeadPerfil() {
     const {
-      lead,
-      loading,
-      oportunidade,
-      atividades,
-      routes,
-      index,
-      setIndex,
-      fetchAtividades,
+        lead,
+        oportunidade,
+        atividades,
+        loading,
+        routes,
+        index,
+        setIndex,
+        toggleMenu,
+        expanded,
+        animation,
+        handleConcluiAtividade,
+        handleRemoveAtividade,
+        loadingConcluir,
+        loadingRemover
     } = useLeadPerfil();
-    
-    const [expanded, setExpanded] = useState<number | null>(null);
-    const animation = useRef(new Animated.Value(0)).current;
-    const [deveReload, setDeveReload] = useState<boolean>(false);
 
-    const toggleMenu = (id: number) => {
-        if (expanded === id) {
-          Animated.timing(animation, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: false,
-          }).start(() => setExpanded(null));
-        } else {
-          setExpanded(id);
-          Animated.timing(animation, {
-            toValue: 50,
-            duration: 300,
-            useNativeDriver: false,
-          }).start();
-        }
-      };
-
-    const handleConcluiAtividade = async (atividadeId: number) => {
-        const payload = {
-            Codigo: atividadeId
-        }
-        await atividadesService.concluirAtividade(payload);
-        setDeveReload(true);
-    }
-
-    const handleRemoveAtividade = async (atividadeId: number) => {
-        const payload = {
-            Codigo: atividadeId
-        }
-        await atividadesService.inativaAtividade(payload);
-        setDeveReload(true);
-    }
-
-    useEffect(() => {
-        if (deveReload) {
-            fetchAtividades();
-            setDeveReload(false); 
-        }
-    }, [deveReload]);
 
     if (loading) {
       return (
@@ -123,10 +85,12 @@ export default function LeadPerfil() {
                     {expanded === atividade.Id && (
                         <Animated.View style={[styles.menuContainer, { height: animation }]}>
                             <TouchableOpacity style={styles.menuButton} onPress={() => handleRemoveAtividade(atividade.Id)}>
-                            <Text style={styles.menuText}>REMOVER</Text>
+                                <Text style={styles.menuText}>REMOVER</Text>
+                                {loadingRemover[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.menuButton} onPress={() => handleConcluiAtividade(atividade.Id)}>
-                            <Text style={styles.menuText}>CONCLUIR</Text>
+                                <TouchableOpacity style={styles.menuButton} onPress={() => handleConcluiAtividade(atividade.Id)}>
+                                <Text style={styles.menuText}>CONCLUIR</Text>
+                                {loadingConcluir[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
                             </TouchableOpacity>
                         </Animated.View>
                     )}

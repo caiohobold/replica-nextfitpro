@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {leadService, leadListService} from '../../api/services/leads'
@@ -119,6 +120,60 @@ export const useLeadPerfil = () => {
       { key: 'informacoes', title: 'Informações', icon: 'user' },
       { key: 'endereco', title: 'Endereço', icon: 'map-pin' },
     ]);
+
+    const [expanded, setExpanded] = useState<number | null>(null);
+    const animation = useRef(new Animated.Value(0)).current;
+    const [deveReload, setDeveReload] = useState<boolean>(false);
+    const [loadingRemover, setLoadingRemover] = useState<{ [key: number]: boolean }>({});
+    const [loadingConcluir, setLoadingConcluir] = useState<{ [key: number]: boolean }>({});
+
+    const toggleMenu = (id: number) => {
+        if (expanded === id) {
+          Animated.timing(animation, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+          }).start(() => setExpanded(null));
+        } else {
+          setExpanded(id);
+          Animated.timing(animation, {
+            toValue: 50,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+        }
+      };
+
+    const handleConcluiAtividade = async (atividadeId: number) => {
+        setLoadingConcluir((prev) => ({ ...prev, [atividadeId]: true }));
+
+        try {
+            const payload = { Codigo: atividadeId };
+            await atividadesService.concluirAtividade(payload);
+            setDeveReload(true); 
+        } finally {
+            setLoadingConcluir((prev) => ({ ...prev, [atividadeId]: false }));
+        }
+    }
+
+    const handleRemoveAtividade = async (atividadeId: number) => {
+        setLoadingRemover((prev) => ({ ...prev, [atividadeId]: true }));
+
+        try {
+            const payload = { Codigo: atividadeId };
+            await atividadesService.inativaAtividade(payload);
+            setDeveReload(true);
+        } finally {
+            setLoadingRemover((prev) => ({ ...prev, [atividadeId]: false }));
+        }
+    }
+
+    useEffect(() => {
+        if (deveReload) {
+            fetchAtividades();
+            setDeveReload(false); 
+        }
+    }, [deveReload]);
   
     const fetchLead = async () => {
         const params = {
@@ -199,6 +254,13 @@ export const useLeadPerfil = () => {
       setIndex,
       fetchLead,
       fetchOportunidades,
-      fetchAtividades
+      fetchAtividades,
+      toggleMenu,
+      expanded,
+      animation,
+      handleConcluiAtividade,
+      handleRemoveAtividade,
+      loadingConcluir,
+      loadingRemover
     }
   }

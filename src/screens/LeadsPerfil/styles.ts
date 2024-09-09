@@ -174,6 +174,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#EF6C00',
     borderRadius: 5,
     height: 40,
+    display: 'flex',
+    gap: 10,
+    flexDirection: 'row',
     justifyContent: 'center',
   },
   menuText: {
