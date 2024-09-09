@@ -48,7 +48,8 @@ export default function DrawerRoutes() {
                 component={Leads}
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size}/>,
-                    drawerLabel: 'Leads'
+                    drawerLabel: 'Leads',
+                    headerTitle: 'Leads'
                 }}
             />
             <Drawer.Screen 

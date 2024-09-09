@@ -52,18 +52,6 @@ interface Lead {
     Contatos: any[];
   }
   
-  interface ResumoCliente {
-    Observacao: string | null;
-    ValorSaldoDevedor: number;
-    ValorEmAtraso: number;
-    ValorCredito: number;
-    ProximoVencto: string;
-    ValorProximoVencto: number;
-    Alertas: any[]; 
-    Contratos: Contrato[];
-    Dependentes: any[]; 
-  }
-  
   interface Contrato {
     Id: number;
     Descricao: string;

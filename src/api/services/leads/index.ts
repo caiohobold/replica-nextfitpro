@@ -18,6 +18,23 @@ export class LeadsServices extends BaseService {
     }
 }
 
+export class LeadListService extends BaseService {
+    protected path: string = '/Pessoa';
+
+    listarLead(params: IParamsPesquisaGeral) {
+        return this.get({
+            endPoint: 'Listar',
+            params: {
+                filter: JSON.stringify(params.filter),
+                includes: JSON.stringify(params.includes),
+                limit: params.limit,
+                page: params.page
+            }
+        })
+    }
+}
+
+const leadListService = new LeadListService();
 const leadService = new LeadsServices();
 
-export default leadService;
+export {leadService, leadListService};
