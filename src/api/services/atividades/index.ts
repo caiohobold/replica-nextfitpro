@@ -16,6 +16,20 @@ export class AtividadesServices extends BaseService {
             }
         })
     }
+
+    concluirAtividade(payload: {}) {
+        return this.post({
+            endPoint: 'Concluir',
+            params: payload
+        })
+    }
+
+    inativaAtividade(payload: {}) {
+        return this.post({
+            endPoint: 'Inativar',
+            params: payload
+        })
+    }
 }
 
 const atividadesService = new AtividadesServices();

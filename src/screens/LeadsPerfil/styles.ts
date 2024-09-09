@@ -82,11 +82,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  contratoItem: {
+  oportunidadeItem: {
     backgroundColor: '#f0f0f0',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+  },
+  atividadeItem: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  atividadeInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   oportunidadeDescricao: {
     fontSize: 16,
@@ -147,7 +159,28 @@ const styles = StyleSheet.create({
   alertaAtrasado: {
     color: 'red',
     fontWeight: 'bold'
-  }
+  },
+  menuContainer: {
+    overflow: 'hidden',
+    backgroundColor: '#f0f0f0',
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: 15,
+  },
+  menuButton: {
+    padding: 13,
+    backgroundColor: '#EF6C00',
+    borderRadius: 5,
+    height: 40,
+    justifyContent: 'center',
+  },
+  menuText: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: '600',
+  },
 });
 
   export default styles;

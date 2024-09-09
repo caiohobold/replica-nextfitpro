@@ -162,7 +162,7 @@ export const useLeadPerfil = () => {
             page: 1,
             includes: ["TipoAtividade"],
             fields: ["Id","Assunto","Descricao","Status","TipoAtividade.Descricao","Inativo","DataHoraRealizada","DataHoraPrevista"],
-            filter: [{"property":"Inativo","value":false,"operator":"equal"},{"property":"SemDataPrevista","value":false,"operator":"equal"},{"property":"Status","value":[1],"operator":"in"},{"property":"CodigoPessoa","value":10752407,"operator":"equal","and":true}]
+            filter: [{"property":"Inativo","value":false,"operator":"equal"},{"property":"SemDataPrevista","value":false,"operator":"equal"},{"property":"Status","value":[1],"operator":"in"},{"property":"CodigoPessoa","value":`${leadId}`,"operator":"equal","and":true}]
         }
         try {
             const responseAtividade = await atividadesService.listarAtividades(params);

@@ -1,10 +1,11 @@
-import { Dimensions, Text, View, ScrollView } from 'react-native';
+import { Dimensions, Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { ActivityIndicator } from 'react-native';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import { useLeadPerfil } from '../../hooks/useLeads';
+import { atividadesService } from '../../api/services/atividades';
 
 export default function LeadPerfil() {
     const {
@@ -15,7 +16,52 @@ export default function LeadPerfil() {
       routes,
       index,
       setIndex,
+      fetchAtividades,
     } = useLeadPerfil();
+    
+    const [expanded, setExpanded] = useState<number | null>(null);
+    const animation = useRef(new Animated.Value(0)).current;
+    const [deveReload, setDeveReload] = useState<boolean>(false);
+
+    const toggleMenu = (id: number) => {
+        if (expanded === id) {
+          Animated.timing(animation, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+          }).start(() => setExpanded(null));
+        } else {
+          setExpanded(id);
+          Animated.timing(animation, {
+            toValue: 50,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+        }
+      };
+
+    const handleConcluiAtividade = async (atividadeId: number) => {
+        const payload = {
+            Codigo: atividadeId
+        }
+        await atividadesService.concluirAtividade(payload);
+        setDeveReload(true);
+    }
+
+    const handleRemoveAtividade = async (atividadeId: number) => {
+        const payload = {
+            Codigo: atividadeId
+        }
+        await atividadesService.inativaAtividade(payload);
+        setDeveReload(true);
+    }
+
+    useEffect(() => {
+        if (deveReload) {
+            fetchAtividades();
+            setDeveReload(false); 
+        }
+    }, [deveReload]);
 
     if (loading) {
       return (
@@ -40,9 +86,9 @@ export default function LeadPerfil() {
             <Text style={styles.sectionTitle}>Oportunidades abertas</Text>
             {oportunidade?.Content && oportunidade.Content.length > 0 ? (
               oportunidade?.Content?.map((oportunidade) => (
-                <View key={oportunidade.Id} style={styles.contratoItem}>
+                <View key={oportunidade.Id} style={styles.oportunidadeItem}>
                     <Text style={styles.oportunidadeDescricao}>{oportunidade.Descricao}</Text>
-                    <Text style={styles.oportunidadeCriacao}>Válido até {new Date(oportunidade.DataCriacao).toLocaleDateString()}</Text>
+                    <Text style={styles.oportunidadeCriacao}>Criado em {new Date(oportunidade.DataCriacao).toLocaleDateString()}</Text>
                 </View>
             ))
            ) : (
@@ -58,15 +104,33 @@ export default function LeadPerfil() {
             const atrasada = dataPrevista < hoje;
 
             return (
-                <View key={atividade.Id} style={styles.contratoItem}>
-                <Text style={styles.oportunidadeDescricao}>{atividade.Assunto}</Text>
-                <Text style={styles.oportunidadeCriacao}>
-                    {atividade.TipoAtividade.Descricao}, {dataPrevista.toLocaleDateString()}
-                </Text>
-                {atrasada && (
-                    <Text style={styles.alertaAtrasado}>Atividade atrasada</Text>
-                )}
-                </View>
+                <TouchableOpacity key={atividade.Id} style={styles.atividadeItem} onPress={() => toggleMenu(atividade.Id)}>
+                    <View style={styles.atividadeInfo}>
+                        <View>
+                            <Text style={styles.oportunidadeDescricao}>{atividade.Assunto}</Text>
+                            <Text style={styles.oportunidadeCriacao}>
+                                {atividade.TipoAtividade.Descricao}, {dataPrevista.toLocaleDateString()}
+                            </Text>
+                            {atrasada && (
+                                <Text style={styles.alertaAtrasado}>Atividade atrasada</Text>
+                            )}
+                        </View>
+                        <TouchableOpacity onPress={() => toggleMenu(atividade.Id)}>
+                            <Feather name="more-horizontal" size={25} color="#000" />
+                        </TouchableOpacity>
+                    </View>
+
+                    {expanded === atividade.Id && (
+                        <Animated.View style={[styles.menuContainer, { height: animation }]}>
+                            <TouchableOpacity style={styles.menuButton} onPress={() => handleRemoveAtividade(atividade.Id)}>
+                            <Text style={styles.menuText}>REMOVER</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.menuButton} onPress={() => handleConcluiAtividade(atividade.Id)}>
+                            <Text style={styles.menuText}>CONCLUIR</Text>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    )}
+                </TouchableOpacity>
             );
             })
         ) : (
