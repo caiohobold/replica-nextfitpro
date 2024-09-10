@@ -42,7 +42,7 @@ export default function Leads() {
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#EF6C00" /> : null}
       />
 
       <TouchableOpacity
