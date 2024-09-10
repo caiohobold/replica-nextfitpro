@@ -3,10 +3,10 @@ import { Text, TextInput, ScrollView, Dimensions, TouchableOpacity } from 'react
 import { TabView, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './styles'
-import { useClienteAdd } from '../../hooks/useClientes';
+import { useLeadAdd } from '../../hooks/useLeads';
 
 
-export default function ClienteAdd() {
+export default function LeadAdd() {
   const {
     form,
     handleInputChange,
@@ -14,7 +14,7 @@ export default function ClienteAdd() {
     index,
     setIndex,
     routes
-  } = useClienteAdd();
+  } = useLeadAdd();
 
   const renderTabContent = () => {
     switch (index) {
@@ -24,14 +24,14 @@ export default function ClienteAdd() {
             <Text style={styles.label}>Nome completo</Text>
             <TextInput
               style={styles.input}
-              value={form.nome}
+              value={form.Nome}
               onChangeText={(value) => handleInputChange('nome', value)}
             />
 
             <Text style={styles.label}>Data de nascimento</Text>
             <TextInput
               style={styles.input}
-              value={form.dataNascimento}
+              value={form.DataNascimento}
               onChangeText={(value) => handleInputChange('dataNascimento', value)}
               placeholder="AAAA-MM-DD"
             />
@@ -39,7 +39,7 @@ export default function ClienteAdd() {
             <Text style={styles.label}>Sexo</Text>
             <TextInput
               style={styles.input}
-              value={form.sexo.toString()}
+              value={form.Sexo.toString()}
               onChangeText={(value) => handleInputChange('sexo', Number(value))}
               placeholder="Digite 1 para Masculino ou 2 para Feminino"
             />
@@ -47,7 +47,7 @@ export default function ClienteAdd() {
             <Text style={styles.label}>Objetivo</Text>
             <TextInput
               style={styles.input}
-              value={form.objetivo.toString()}
+              value={form.CodigoObjetivo.toString()}
               onChangeText={(value) => handleInputChange('objetivo', Number(value))}
               placeholder="Digite o código do objetivo"
             />
@@ -55,7 +55,7 @@ export default function ClienteAdd() {
             <Text style={styles.label}>Celular</Text>
             <TextInput
               style={styles.input}
-              value={form.celular}
+              value={form.Fone}
               onChangeText={(value) => handleInputChange('celular', value)}
               keyboardType="numeric"
             />
@@ -63,7 +63,7 @@ export default function ClienteAdd() {
             <Text style={styles.label}>E-mail</Text>
             <TextInput
               style={styles.input}
-              value={form.email}
+              value={form.Email}
               onChangeText={(value) => handleInputChange('email', value)}
               keyboardType="email-address"
             />
@@ -71,7 +71,7 @@ export default function ClienteAdd() {
             <Text style={styles.label}>CPF</Text>
             <TextInput
               style={styles.input}
-              value={form.cpf}
+              value={form.Cpf}
               onChangeText={(value) => handleInputChange('cpf', value)}
               keyboardType="numeric"
             />
@@ -158,9 +158,9 @@ export default function ClienteAdd() {
             scrollEnabled={false}
             labelStyle={{ fontSize: 9, textAlign: 'center' }}
             style={{ backgroundColor: '#FFFFFF' }}
-            indicatorStyle={{ backgroundColor: '#6200ea' }}
+            indicatorStyle={{ backgroundColor: '#EF6C00' }}
             inactiveColor="#808080"
-            activeColor="#6200ea"
+            activeColor="#EF6C00"
             tabStyle={{ flex: 1}}
             renderIcon={({ route, color }) => (
               <Feather

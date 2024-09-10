@@ -84,11 +84,11 @@ export default function LeadPerfil() {
 
                     {expanded === atividade.Id && (
                         <Animated.View style={[styles.menuContainer, { height: animation }]}>
-                            <TouchableOpacity style={styles.menuButton} onPress={() => handleRemoveAtividade(atividade.Id)}>
+                            <TouchableOpacity style={styles.menuButtonRemover} onPress={() => handleRemoveAtividade(atividade.Id)}>
                                 <Text style={styles.menuText}>REMOVER</Text>
                                 {loadingRemover[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
                             </TouchableOpacity>
-                                <TouchableOpacity style={styles.menuButton} onPress={() => handleConcluiAtividade(atividade.Id)}>
+                                <TouchableOpacity style={styles.menuButtonConcluir} onPress={() => handleConcluiAtividade(atividade.Id)}>
                                 <Text style={styles.menuText}>CONCLUIR</Text>
                                 {loadingConcluir[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
                             </TouchableOpacity>

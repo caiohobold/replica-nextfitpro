@@ -7,6 +7,7 @@ import DrawerRoutes from './drawer.routes';
 import ClientePerfil from '../screens/ClientePerfil';
 import ClienteAdd from '../screens/ClienteAdd';
 import LeadPerfil from '../screens/LeadsPerfil';
+import LeadAdd from '../screens/LeadAdd';
 
 export type RootStackParamList = {
     login: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
     ClientePerfil: { clienteId: number; clienteNome: string };
     LeadPerfil: { leadId: number; leadNome: string };
     ClienteAdd: undefined;
+    LeadAdd: undefined
   };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -69,6 +71,19 @@ export default function StackRoutes() {
                 options={({ navigation }) => ({
                     headerShown: true,
                     headerTitle: 'Perfil do Lead',
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-back" size={25} color="white" />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen 
+                name="LeadAdd"    
+                component={LeadAdd}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerTitle: 'Novo Lead',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <Icon name="arrow-back" size={25} color="white" />

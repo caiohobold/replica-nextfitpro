@@ -6,7 +6,7 @@ import styles from './styles';
 
 
 export default function Login() {
-    const { loadingLogin, handleVerifyEmail, onClickLogin, codigoTenant, codigoUnidade, isEmailVerified, setCodigoTenant, setCodigoUnidade, setTenants, tenants } = useLogin();
+    const { loadingLogin, handleVerifyEmail, onClickLogin, codigoTenant, codigoUnidade, isEmailVerified, setCodigoTenant, setCodigoUnidade, tenants } = useLogin();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

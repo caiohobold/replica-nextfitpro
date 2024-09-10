@@ -47,7 +47,7 @@ export default function Leads() {
 
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate('ClienteAdd')}
+        onPress={() => navigation.navigate('LeadAdd')}
       >
         <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>

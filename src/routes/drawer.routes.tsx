@@ -47,7 +47,7 @@ export default function DrawerRoutes() {
                 name="leads" 
                 component={Leads}
                 options={{
-                    drawerIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size}/>,
+                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="account-box-multiple" color={color} size={size}/>,
                     drawerLabel: 'Leads',
                     headerTitle: 'Leads'
                 }}

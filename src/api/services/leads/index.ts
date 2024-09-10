@@ -16,6 +16,13 @@ export class LeadsServices extends BaseService {
             }
         });
     }
+
+    inserirLead(leadData: any) {
+        return this.post({
+            endPoint: 'Inserir',
+            params: leadData
+        })
+    }
 }
 
 export class LeadListService extends BaseService {

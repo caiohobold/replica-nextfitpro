@@ -169,10 +169,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     gap: 15,
   },
-  menuButton: {
+  menuButtonRemover: {
     padding: 13,
-    backgroundColor: '#EF6C00',
-    borderRadius: 5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    height: 40,
+    display: 'flex',
+    gap: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  menuButtonConcluir: {
+    padding: 13,
+    backgroundColor: 'green',
+    borderRadius: 10,
     height: 40,
     display: 'flex',
     gap: 10,

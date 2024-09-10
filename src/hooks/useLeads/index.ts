@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated } from 'react-native';
+import { Alert, Animated } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {leadService, leadListService} from '../../api/services/leads'
@@ -264,3 +264,65 @@ export const useLeadPerfil = () => {
       loadingRemover
     }
   }
+
+export const useLeadAdd = () => {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'informacoes', title: 'Informações', icon: 'user' },
+    { key: 'endereco', title: 'Endereço', icon: 'map-pin' },
+    { key: 'responsaveis', title: 'Responsáveis', icon: 'user-check' },
+    { key: 'mais', title: 'Mais', icon: 'more-horizontal' },
+  ]);
+
+  const [form, setForm] = useState({
+    Nome: '',
+    DataNascimento: '',
+    Sexo: 1,
+    CodigoObjetivo: '',
+    Fone: '',
+    Email: '',
+    Cpf: '',
+    DddFone: '48',
+    bairro: '',
+    complemento: '',
+    numEndereco: '',
+    endereco: '',
+    cep: '',
+    CodigoCidade: null,
+    notificarWhatsApp: true,
+    codigoUsuarioProfessor: 15073778,
+    codigoClienteResponsavel: 9967247,
+    CodigoUsuarioConsultor: 15073778,
+    Rg: ''
+  });
+
+  const handleInputChange = (name: string, value: string | number | boolean) => {
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    const payload = {
+      ...form,
+    };
+
+    try {
+      const response = await leadService.inserirLead(payload);
+      Alert.alert("Sucesso", "Cliente inserido com sucesso!");
+    } catch (error) {
+      Alert.alert("Erro", "Ocorreu um erro ao inserir o cliente.");
+      console.error(error);
+    }
+  };
+
+  return {
+    form,
+    handleInputChange,
+    handleSubmit,
+    index,
+    setIndex,
+    routes
+  }
+}
