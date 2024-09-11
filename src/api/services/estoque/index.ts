@@ -1,7 +1,7 @@
 import { IParamsPesquisaGeral } from '../../interfaces';
 import { BaseService } from '../base';
 
-export class EstoqueService extends BaseService {
+export class EstoqueListService extends BaseService {
     protected path: string = '/Item';
 
     listarEstoque(params: IParamsPesquisaGeral) {
@@ -18,6 +18,18 @@ export class EstoqueService extends BaseService {
     }
 }
 
-const estoqueService = new EstoqueService();
+export class EstoqueEditService extends BaseService {
+    protected path: string = '/itemestoque';
 
-export {estoqueService};
+    listarEstoque(itemData: any) {
+        return this.get({
+            endPoint: '',
+            params: itemData
+        })
+    }
+}
+
+const estoqueService = new EstoqueListService();
+const estoqueEditService = new EstoqueEditService();
+
+export {estoqueService, estoqueEditService};

@@ -73,6 +73,39 @@ const styles = StyleSheet.create({
       bottom: 30,
       elevation: 8,
     },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)', // Fundo escurecido
+    },
+    modalContent: {
+      width: 300,
+      padding: 20,
+      backgroundColor: 'white',
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 15,
+    },
+    modalButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 20,
+    },
+    modalButton: {
+      padding: 10,
+      margin: 5,
+      backgroundColor: '#795548',
+      borderRadius: 5,
+    },
+    modalButtonText: {
+      color: 'white',
+      fontWeight: 'bold',
+    },
   });
 
   export default styles;
