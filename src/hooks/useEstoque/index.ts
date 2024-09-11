@@ -4,7 +4,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useRoute, RouteProp } from '@react-navigation/native';
 type PerfilClienteRouteProp = RouteProp<RootStackParamList, 'LeadPerfil'>;
 import { RootStackParamList } from '../../routes/stack.routes'
-import { estoqueService } from '../../api/services/estoque';
+import { estoqueEditService, estoqueService } from '../../api/services/estoque';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
 
 
 export const useEstoqueLista = () => {
@@ -15,9 +17,18 @@ export const useEstoqueLista = () => {
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+    const [quantidade, setQuantidade] = useState('');
+    const [motivo, setMotivo] = useState('Entrada manual');
+
     const fetchEstoque = async (currentPage: number) => {
-        if (!hasMore || isLoadingMore) return;
+        if (!hasMore || isLoadingMore) {
+          console.log('fetchEstoque não chamado: hasMore:', hasMore, 'isLoadingMore:', isLoadingMore);
+          return;
+        }
     
+        
         setIsLoadingMore(true);
 
         const params = {
@@ -64,6 +75,55 @@ export const useEstoqueLista = () => {
       }
     };
 
+    const openModal = (productId: number) => {
+      setSelectedProductId(productId);
+      setModalVisible(true);
+    };
+
+    const closeModal = () => {
+      setModalVisible(false);
+      setSelectedProductId(null);
+    };
+
+    const handleInputChange = (value: string | number | boolean) => {
+      setQuantidade(value.toString());
+      setMotivo(value.toString());
+    };
+
+
+    const handleSubmit = async () => {
+      const payload = {
+        CodigoItem: selectedProductId,
+        CodigoUsuario: '',
+        Qtde: quantidade,
+        Data: new Date().toISOString(),
+        Motivo: motivo,
+        Tipo: 1
+      };
+
+  
+      try {
+        await estoqueEditService.adicionarEstoque(payload);
+        Alert.alert("Sucesso", "Itens inseridos com sucesso!");
+
+        closeModal();
+        setQuantidade('');
+        setMotivo('Entrada manual');
+
+        setEstoque([]);
+        setPage(1);
+        fetchEstoque(1);
+
+      } catch (error) {
+        Alert.alert("Erro", "Ocorreu um erro ao adicionar itens ao estoque.");
+        console.error(error);
+        closeModal();
+        setQuantidade('');
+        setMotivo('Entrada manual');
+      }
+    };
+
+
     return {
       estoque,
       setEstoque,
@@ -73,6 +133,15 @@ export const useEstoqueLista = () => {
       setHasMore,
       handleLoadMore,
       fetchEstoque,
-      navigation
+      handleInputChange,
+      handleSubmit,
+      openModal,
+      closeModal,
+      quantidade,
+      setQuantidade,
+      motivo,
+      setMotivo,
+      navigation,
+      modalVisible
     }
 }

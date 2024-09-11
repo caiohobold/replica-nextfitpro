@@ -106,6 +106,13 @@ const styles = StyleSheet.create({
       color: 'white',
       fontWeight: 'bold',
     },
+    inputContainer: {
+      width: '100%',
+      marginVertical: 10,
+    },
+    input: {
+      textAlign: 'center',
+    },
   });
 
   export default styles;
