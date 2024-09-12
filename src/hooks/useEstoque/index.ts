@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useRoute, RouteProp } from '@react-navigation/native';
-type PerfilClienteRouteProp = RouteProp<RootStackParamList, 'LeadPerfil'>;
+import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../routes/stack.routes'
 import { estoqueEditService, estoqueService } from '../../api/services/estoque';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { Alert } from 'react-native';
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 
 export const useEstoqueLista = () => {

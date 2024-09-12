@@ -3,10 +3,11 @@ import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import Inicio from '../screens/InicioDrawer';
 import Clientes from '../screens/ClientesDrawer';
-import Avaliacao from '../screens/AvaliacaoDrawer';
+import Avaliacao from '../screens/RelatoriosDrawer';
 import Wod from '../screens/WodDrawer';
 import Leads from '../screens/LeadsDrawer';
 import Estoque from '../screens/EstoqueDrawer';
+import Relatorios from '../screens/RelatoriosDrawer';
 
 const Drawer = createDrawerNavigator();
 
@@ -61,11 +62,12 @@ export default function DrawerRoutes() {
                 }}
             />
             <Drawer.Screen 
-                name="avaliacao" 
-                component={Avaliacao}
+                name="relatorios" 
+                component={Relatorios}
                 options={{
-                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="heart-pulse" color={color} size={size}/>,
-                    drawerLabel: 'Avaliação'
+                    drawerIcon: ({ color, size }) => <MaterialCommunityIcons name="file-chart" color={color} size={size}/>,
+                    drawerLabel: 'Relatórios',
+                    headerTitle: 'Relatórios'
                 }}
             />
             <Drawer.Screen 
