@@ -1,10 +1,10 @@
 import { Dimensions, Text, View, ScrollView } from 'react-native';
-import { ActivityIndicator } from 'react-native';
 import React from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import { useClientePerfil } from '../../hooks/useClientes';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export default function ClientePerfil() {
     const {
@@ -21,7 +21,7 @@ export default function ClientePerfil() {
     if (loading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <LoadingComponent size="large" color="#0000ff" />
         </View>
       );
     }

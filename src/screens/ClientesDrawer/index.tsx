@@ -1,8 +1,9 @@
-import { Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles'
 import { useClientesLista } from '../../hooks/useClientes';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export default function Clientes() {
   const {
@@ -19,7 +20,7 @@ export default function Clientes() {
   if (loading && page === 1) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <LoadingComponent size="large" color="#0000ff" />
       </View>
     );
   }
@@ -56,7 +57,7 @@ export default function Clientes() {
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+        ListFooterComponent={loading ? <LoadingComponent size="large" color="#0000ff" /> : null}
       />
 
       <TouchableOpacity

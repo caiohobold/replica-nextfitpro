@@ -1,10 +1,10 @@
 import { Dimensions, Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
-import { ActivityIndicator } from 'react-native';
 import React from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './styles';
 import { useLeadPerfil } from '../../hooks/useLeads';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export default function LeadPerfil() {
     const {
@@ -28,7 +28,7 @@ export default function LeadPerfil() {
     if (loading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <LoadingComponent size="large" color="#0000ff" />
         </View>
       );
     }
@@ -86,11 +86,11 @@ export default function LeadPerfil() {
                         <Animated.View style={[styles.menuContainer, { height: animation }]}>
                             <TouchableOpacity style={styles.menuButtonRemover} onPress={() => handleRemoveAtividade(atividade.Id)}>
                                 <Text style={styles.menuText}>REMOVER</Text>
-                                {loadingRemover[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
+                                {loadingRemover[atividade.Id] && <LoadingComponent size="small" color="#fff" />}
                             </TouchableOpacity>
                                 <TouchableOpacity style={styles.menuButtonConcluir} onPress={() => handleConcluiAtividade(atividade.Id)}>
                                 <Text style={styles.menuText}>CONCLUIR</Text>
-                                {loadingConcluir[atividade.Id] && <ActivityIndicator size="small" color="#fff" />}
+                                {loadingConcluir[atividade.Id] && <LoadingComponent size="small" color="#fff" />}
                             </TouchableOpacity>
                         </Animated.View>
                     )}

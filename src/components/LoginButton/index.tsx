@@ -1,10 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import LoadingComponent from '../LoadingComponent';
 
 const LoginButton = ({ title, onPress, loading }: { title: string, onPress: () => void, loading: boolean }) => (
     <TouchableOpacity style={styles.button} onPress={onPress} disabled={loading}>
         {loading ? (
-            <ActivityIndicator size="small" color="#fff" />
+            <LoadingComponent size="small" color="#fff"/>
         ) : (
             <Text style={styles.buttonText}>{title}</Text>
         )}

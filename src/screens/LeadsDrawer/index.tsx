@@ -1,7 +1,8 @@
-import { Text, View, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { useLeadsLista } from '../../hooks/useLeads';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export default function Leads() {
   const {
@@ -42,7 +43,7 @@ export default function Leads() {
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#EF6C00" /> : null}
+        ListFooterComponent={loading ? <LoadingComponent size="large" color="#EF6C00" /> : null}
       />
 
       <TouchableOpacity

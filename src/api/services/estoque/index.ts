@@ -21,7 +21,7 @@ export class EstoqueListService extends BaseService {
 export class EstoqueEditService extends BaseService {
     protected path: string = '/itemestoque';
 
-    adicionarEstoque(itemData: any) {
+    editarEstoque(itemData: any) {
         return this.post({
             endPoint: '',
             params: itemData

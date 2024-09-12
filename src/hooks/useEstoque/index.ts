@@ -7,6 +7,7 @@ import { RootStackParamList } from '../../routes/stack.routes'
 import { estoqueEditService, estoqueService } from '../../api/services/estoque';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { Alert } from 'react-native';
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 
 
 export const useEstoqueLista = () => {
@@ -17,18 +18,20 @@ export const useEstoqueLista = () => {
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisibleEntrada, setModalVisibleEntrada] = useState(false);
+    const [modalVisibleSaida, setModalVisibleSaida] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
     const [quantidade, setQuantidade] = useState('');
-    const [motivo, setMotivo] = useState('Entrada manual');
+    const [motivoEntrada, setMotivoEntrada] = useState('Entrada manual');
+    const [motivoSaida, setMotivoSaida] = useState('Saída manual');
 
     const fetchEstoque = async (currentPage: number) => {
-        if (!hasMore || isLoadingMore) {
+        if (!hasMore && currentPage !== 1 || isLoadingMore) {
           console.log('fetchEstoque não chamado: hasMore:', hasMore, 'isLoadingMore:', isLoadingMore);
           return;
         }
-    
         
+
         setIsLoadingMore(true);
 
         const params = {
@@ -43,7 +46,7 @@ export const useEstoqueLista = () => {
           const response = await estoqueService.listarEstoque(params);
           const data: Estoque[] = response.data.Content;
     
-          if (data.length < 50) {
+          if (data.length < params.limit) {
             setHasMore(false);
           }
     
@@ -75,53 +78,97 @@ export const useEstoqueLista = () => {
       }
     };
 
-    const openModal = (productId: number) => {
+    const openModalEntrada = (productId: number) => {
       setSelectedProductId(productId);
-      setModalVisible(true);
+      setModalVisibleEntrada(true);
     };
 
-    const closeModal = () => {
-      setModalVisible(false);
+    const openModalSaida = (productId: number) => {
+      setSelectedProductId(productId);
+      setModalVisibleSaida(true);
+    };
+
+    const closeModalEntrada = () => {
+      setModalVisibleEntrada(false);
       setSelectedProductId(null);
+      setMotivoEntrada("Entrada manual");
+      setQuantidade('');
+    };
+
+    const closeModalSaida = () => {
+      setModalVisibleSaida(false);
+      setSelectedProductId(null);
+      setMotivoSaida("Saída manual");
+      setQuantidade('');
     };
 
     const handleInputChange = (value: string | number | boolean) => {
       setQuantidade(value.toString());
-      setMotivo(value.toString());
+      setMotivoEntrada(value.toString());
     };
 
 
-    const handleSubmit = async () => {
+    const handleSubmitAddEstoque = async () => {
       const payload = {
         CodigoItem: selectedProductId,
         CodigoUsuario: '',
         Qtde: quantidade,
         Data: new Date().toISOString(),
-        Motivo: motivo,
+        Motivo: motivoEntrada,
         Tipo: 1
       };
 
   
       try {
-        await estoqueEditService.adicionarEstoque(payload);
+        await estoqueEditService.editarEstoque(payload);
         Alert.alert("Sucesso", "Itens inseridos com sucesso!");
-
-        closeModal();
+        closeModalEntrada();
         setQuantidade('');
-        setMotivo('Entrada manual');
-
+        setMotivoEntrada('Entrada manual');
         setEstoque([]);
+        setHasMore(true);
         setPage(1);
         fetchEstoque(1);
+        setLoading(true);
 
       } catch (error) {
         Alert.alert("Erro", "Ocorreu um erro ao adicionar itens ao estoque.");
         console.error(error);
-        closeModal();
+        closeModalEntrada();
         setQuantidade('');
-        setMotivo('Entrada manual');
+        setMotivoEntrada('Entrada manual');
       }
     };
+    
+    const handleSubmitRemoveEstoque = async () => {
+      const payload = {
+        CodigoItem: selectedProductId,
+        CodigoUsuario: '',
+        Qtde: quantidade,
+        Data: new Date().toISOString(),
+        Motivo: motivoSaida,
+        Tipo: 2
+      }
+
+      try {
+        await estoqueEditService.editarEstoque(payload);
+        Alert.alert("Sucesso", "Itens removidos com sucesso!");
+        closeModalSaida();
+        setQuantidade('');
+        setMotivoSaida('Saída manual');
+        setEstoque([]);
+        setHasMore(true);
+        setPage(1);
+        fetchEstoque(1);
+        setLoading(true);
+      } catch (error) {
+        Alert.alert("Erro", "Ocorreu um erro ao remover itens ao estoque.");
+        console.error(error);
+        closeModalSaida();
+        setQuantidade('');
+        setMotivoSaida('Entrada manual');
+      }
+    }
 
 
     return {
@@ -134,14 +181,20 @@ export const useEstoqueLista = () => {
       handleLoadMore,
       fetchEstoque,
       handleInputChange,
-      handleSubmit,
-      openModal,
-      closeModal,
+      handleSubmitAddEstoque,
+      openModalEntrada,
+      closeModalEntrada,
       quantidade,
       setQuantidade,
-      motivo,
-      setMotivo,
+      motivoSaida,
+      setMotivoSaida,
+      motivoEntrada,
+      setMotivoEntrada,
+      handleSubmitRemoveEstoque,
+      openModalSaida,
+      closeModalSaida,
       navigation,
-      modalVisible
+      modalVisibleEntrada,
+      modalVisibleSaida
     }
 }

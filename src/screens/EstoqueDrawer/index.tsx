@@ -1,10 +1,10 @@
-import { ActivityIndicator, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles'
 import { useEstoqueLista } from '../../hooks/useEstoque';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Input } from 'react-native-elements';
+import LoadingComponent from '../../components/LoadingComponent';
+import ModalEstoque from '../../components/ModalEstoque';
 
 export default function Estoque() {
 
@@ -12,14 +12,20 @@ export default function Estoque() {
     estoque,
     loading,
     handleLoadMore,
-    handleSubmit,
+    handleSubmitAddEstoque,
+    handleSubmitRemoveEstoque,
+    openModalSaida,
+    motivoSaida,
+    setMotivoSaida,
+    closeModalSaida,
     quantidade,
     setQuantidade,
-    modalVisible,
-    openModal,
-    closeModal,
-    motivo,
-    setMotivo,
+    modalVisibleEntrada,
+    modalVisibleSaida,
+    openModalEntrada,
+    closeModalEntrada,
+    motivoEntrada,
+    setMotivoEntrada,
     navigation
   } = useEstoqueLista();
 
@@ -40,10 +46,10 @@ export default function Estoque() {
         </View>
         <View style={styles.buttonsContainer}>
           <Text style={styles.precoLabel}>{formatPrice(item.Preco)}</Text>
-          <TouchableOpacity onPress={() => openModal(item.Id)}>
+          <TouchableOpacity onPress={() => openModalEntrada(item.Id)}>
             <MaterialCommunityIcons name="cart-plus" color="green" size={29}/>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openModalSaida(item.Id)}>
             <MaterialCommunityIcons name="cart-off" color="red" size={29}/>
           </TouchableOpacity>
         </View>
@@ -59,7 +65,7 @@ export default function Estoque() {
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#795548" /> : null}
+        ListFooterComponent={loading ? <LoadingComponent size="large" color="#795548"/> : null}
       />
       <TouchableOpacity
         style={styles.floatingButton}
@@ -68,52 +74,35 @@ export default function Estoque() {
         <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>
 
+      <ModalEstoque
+        title="Entrada de estoque" 
+        onRequestClose={closeModalEntrada}
+        visible={modalVisibleEntrada}
+        onPressOut={closeModalEntrada}
+        placeholderQtd="Quantidade"
+        valueQtd={quantidade}
+        onChangeTextQtd={setQuantidade}
+        placeholderMotivo="Motivo"
+        valueMotivo={motivoEntrada}
+        onChangeTextMotivo={setMotivoEntrada}
+        onPressCancel={closeModalEntrada}
+        onPressConfirm={handleSubmitAddEstoque}
+      />
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal} // Para fechar ao pressionar "voltar"
-      >
-        <TouchableOpacity 
-          style={styles.modalContainer} 
-          activeOpacity={1} 
-          onPressOut={closeModal}
-        >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Adicionar ao Carrinho</Text>
-
-            {/* Input numérico */}
-            <Input
-              placeholder="Quantidade"
-              keyboardType="numeric"
-              value={quantidade}
-              onChangeText={setQuantidade}
-              containerStyle={styles.inputContainer}
-              inputStyle={styles.input}
-            />
-
-            <Input
-              placeholder="Motivo"
-              keyboardType="default"
-              value={motivo}
-              onChangeText={setMotivo}
-              containerStyle={styles.inputContainer}
-              inputStyle={styles.input}
-            />
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.modalButton} onPress={closeModal}>
-                <Text style={styles.modalButtonText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalButton} onPress={handleSubmit}>
-                <Text style={styles.modalButtonText}>Confirmar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
+      <ModalEstoque
+        title="Saída de estoque"
+        onRequestClose={closeModalSaida}
+        visible={modalVisibleSaida}
+        onPressOut={closeModalSaida}
+        placeholderQtd="Quantidade"
+        valueQtd={quantidade}
+        onChangeTextQtd={setQuantidade}
+        placeholderMotivo="Motivo"
+        valueMotivo={motivoSaida}
+        onChangeTextMotivo={setMotivoSaida}
+        onPressCancel={closeModalSaida}
+        onPressConfirm={handleSubmitRemoveEstoque}
+      />
 
     </View>
   );
