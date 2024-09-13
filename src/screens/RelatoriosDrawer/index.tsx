@@ -25,8 +25,8 @@ export default function Relatorios() {
         onPress={() => navigation.navigate('RelatorioClientesPorContrato')}
       >
         <View style={styles.textContainer}>
-          <Text style={styles.name}>Clientes por Contrato</Text>
-          <Text style={styles.subtitle}>Veja a quantidade de clientes em cada contrato.</Text>
+          <Text style={styles.name}>Aniversariantes</Text>
+          <Text style={styles.subtitle}>Saiba quem está de aniversário!</Text>
         </View>
       </TouchableOpacity>
     </>
