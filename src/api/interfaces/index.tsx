@@ -47,6 +47,12 @@ export interface IParamsPesquisaGeral {
     filter?: any;
 }
 
+export interface IParamsRel {
+    DataFinalStr?: any;
+    DataInicialStr?: any;
+    TipoOrigem?: number;
+}
+
 export type Operators =
     | 'equal'
     | 'contains'
