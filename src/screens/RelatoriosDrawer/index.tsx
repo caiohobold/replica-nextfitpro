@@ -22,7 +22,7 @@ export default function Relatorios() {
 
       <TouchableOpacity 
         style={styles.itemContainer}
-        onPress={() => navigation.navigate('RelatorioClientesPorContrato')}
+        onPress={() => navigation.navigate('RelatorioAniversariantes')}
       >
         <View style={styles.textContainer}>
           <Text style={styles.name}>Aniversariantes</Text>

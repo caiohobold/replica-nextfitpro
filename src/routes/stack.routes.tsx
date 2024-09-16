@@ -9,7 +9,7 @@ import ClienteAdd from '../screens/ClienteAdd';
 import LeadPerfil from '../screens/LeadsPerfil';
 import LeadAdd from '../screens/LeadAdd';
 import RelatorioReceita from '../screens/RelatoriosPath/Receita';
-import RelatorioClientesPorContrato from '../screens/RelatoriosPath/ClientesPorContrato';
+import RelatorioAniversariantes from '../screens/RelatoriosPath/Aniversariantes';
 
 export type RootStackParamList = {
     login: undefined;
@@ -19,7 +19,7 @@ export type RootStackParamList = {
     ClienteAdd: undefined;
     LeadAdd: undefined;
     RelatorioReceita: undefined;
-    RelatorioClientesPorContrato: undefined;
+    RelatorioAniversariantes: undefined;
   };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -109,11 +109,11 @@ export default function StackRoutes() {
                 })}
             />
             <Stack.Screen 
-                name="RelatorioClientesPorContrato"    
-                component={RelatorioClientesPorContrato}
+                name="RelatorioAniversariantes"    
+                component={RelatorioAniversariantes}
                 options={({ navigation }) => ({
                     headerShown: true,
-                    headerTitle: 'Clientes por contrato',
+                    headerTitle: 'Aniversariantes',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <Icon name="arrow-back" size={25} color="white" />

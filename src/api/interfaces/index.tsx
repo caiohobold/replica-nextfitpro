@@ -51,6 +51,9 @@ export interface IParamsRel {
     DataFinalStr?: any;
     DataInicialStr?: any;
     TipoOrigem?: number;
+    DataFimStr?: any;
+    DataIniStr?: any;
+    MostrarInativos?: boolean;
 }
 
 export type Operators =
