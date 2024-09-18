@@ -3,7 +3,7 @@ import axios from 'axios';
 import {IRefreshTokenResponse, IToken, ITokenResponse} from './interfaces';
 import * as SecureStore from 'expo-secure-store';
 
-const apiURL = 'https://api.sandbox.appnext.fit/api/'
+const apiURL = 'https://api-sandbox.appnext.fit/api/'
 
 export const refreshToken = async () => {
     const refreshToken = await SecureStore.getItemAsync('X-REFRESH-TOKEN');

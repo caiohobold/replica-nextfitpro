@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
       padding: 20
     },
     textContainer: {
+      marginLeft: 12,
       flex: 1
     },
     name: {

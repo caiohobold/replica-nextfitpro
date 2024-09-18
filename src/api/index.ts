@@ -25,7 +25,7 @@ const transformDeserializer: AxiosResponseTransformer = (data: any) => {
     return data;
 };
 
-const apiURL = 'https://api.sandbox.appnext.fit/api/'
+const apiURL = 'https://api-sandbox.appnext.fit/api/'
 
 // @ts-ignore
 const api = axios.create({

@@ -69,7 +69,7 @@ export default function Estoque() {
       />
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate('LeadAdd')}
+        onPress={() => navigation.navigate('EstoqueAdd')}
       >
         <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>

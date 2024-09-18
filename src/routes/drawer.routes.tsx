@@ -3,7 +3,6 @@ import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import Inicio from '../screens/InicioDrawer';
 import Clientes from '../screens/ClientesDrawer';
-import Avaliacao from '../screens/RelatoriosDrawer';
 import Wod from '../screens/WodDrawer';
 import Leads from '../screens/LeadsDrawer';
 import Estoque from '../screens/EstoqueDrawer';
@@ -31,7 +30,8 @@ export default function DrawerRoutes() {
                 component={Inicio}
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name="home" color={color} size={size}/>,
-                    drawerLabel: 'Início'
+                    drawerLabel: 'Início',
+                    headerTitle: 'Início'
                 }}
             />
             <Drawer.Screen 

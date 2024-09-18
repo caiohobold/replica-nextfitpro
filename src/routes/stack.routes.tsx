@@ -10,6 +10,8 @@ import LeadPerfil from '../screens/LeadsPerfil';
 import LeadAdd from '../screens/LeadAdd';
 import RelatorioReceita from '../screens/RelatoriosPath/Receita';
 import RelatorioAniversariantes from '../screens/RelatoriosPath/Aniversariantes';
+import EstoqueAdd from '../screens/EstoqueAdd';
+import Clientes from '../screens/ClientesDrawer';
 
 export type RootStackParamList = {
     login: undefined;
@@ -20,6 +22,8 @@ export type RootStackParamList = {
     LeadAdd: undefined;
     RelatorioReceita: undefined;
     RelatorioAniversariantes: undefined;
+    EstoqueAdd: undefined;
+    ClienteLista: undefined;
   };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -62,6 +66,19 @@ export default function StackRoutes() {
                 options={({ navigation }) => ({
                     headerShown: true,
                     headerTitle: 'Novo Cliente',
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-back" size={25} color="white" />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen 
+                name="ClienteLista" 
+                component={Clientes}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerTitle: 'Clientes',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <Icon name="arrow-back" size={25} color="white" />
@@ -114,6 +131,19 @@ export default function StackRoutes() {
                 options={({ navigation }) => ({
                     headerShown: true,
                     headerTitle: 'Aniversariantes',
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="arrow-back" size={25} color="white" />
+                        </TouchableOpacity>
+                    ),
+                })}
+            />
+            <Stack.Screen 
+                name="EstoqueAdd"    
+                component={EstoqueAdd}
+                options={({ navigation }) => ({
+                    headerShown: true,
+                    headerTitle: 'Novo Produto',
                     headerLeft: () => (
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <Icon name="arrow-back" size={25} color="white" />

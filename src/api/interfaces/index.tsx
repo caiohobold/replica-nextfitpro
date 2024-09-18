@@ -39,8 +39,8 @@ export interface IListagemBase {
 export interface IParamsPesquisaGeral {
     verRemovidos?: boolean;
     status?: any;
-    page: number;
-    limit: number;
+    page?: number;
+    limit?: number;
     includes?: any;
     sort?: any;
     fields?: any;
