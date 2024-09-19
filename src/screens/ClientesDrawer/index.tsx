@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles'
 import { useClientesLista } from '../../hooks/useClientes';
 import LoadingComponent from '../../components/LoadingComponent';
+import ClienteItem from '../../components/ClienteItem';
 
 export default function Clientes() {
   const {
@@ -25,28 +26,8 @@ export default function Clientes() {
     );
   }
 
-  const renderItem = ({ item }: { item: Cliente }) => {
-    const statusColor = renderStatusColor(item.ClienteParametro.Status);
-    const sexoCadastro = renderSexo(item.Sexo);
-    const inicial = item.Nome.charAt(0).toUpperCase();
-
-    return (
-      <TouchableOpacity 
-        style={styles.itemContainer}
-        onPress={() => navigation.navigate('ClientePerfil', { clienteId: item.Id, clienteNome: item.Nome })} 
-      >
-        <View style={styles.circleContainer}>
-          <View style={styles.circle}>
-            <Text style={styles.initial}>{inicial}</Text>
-            <View style={[styles.statusCircle, { backgroundColor: statusColor }]} />
-          </View>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.name}>{item.Nome}</Text>
-          <Text style={styles.sexoText}>{sexoCadastro}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+  const handleNavigateToClientePerfil = (clienteId: number, clienteNome: string) => {
+    navigation.navigate('ClientePerfil', { clienteId, clienteNome });
   };
 
   return (
@@ -54,7 +35,14 @@ export default function Clientes() {
       <FlatList
         data={clientes}
         keyExtractor={(item) => item.Id.toString()}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <ClienteItem
+            cliente={item}
+            onPress={handleNavigateToClientePerfil}
+            renderSexo={renderSexo}
+            renderStatusColor={renderStatusColor}
+          />
+        )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading ? <LoadingComponent size="large" color="#0000ff" /> : null}
