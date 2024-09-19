@@ -30,9 +30,9 @@ export default function Inicio() {
     fetchPagarHoje();
   }, []);
 
-  const nomes = userInfo?.Nome.split(' '); // Divide o nome em partes
-  const inicial = nomes ? nomes[0].charAt(0).toUpperCase() : ''; // Inicial do primeiro nome
-  const secondInicial = nomes.length > 1 ? nomes[nomes.length - 1].charAt(0).toUpperCase() : ''; // Inicial do sobrenome
+  const nomes = userInfo?.Nome ? userInfo.Nome.split(' ') : [];
+  const inicial = nomes.length > 0 ? nomes[0].charAt(0).toUpperCase() : '';
+  const secondInicial = nomes.length > 1 ? nomes[nomes.length - 1].charAt(0).toUpperCase() : '';
 
   return (
     <View style={styles.container}>
